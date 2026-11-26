@@ -16,11 +16,27 @@ The project demonstrates an end-to-end machine learning workflow, including:
 - Image upload and model retraining.
 - A Streamlit user interface.
 - Docker-based application deployment.
+- Cloud deployment using Render.
 - Load testing using Locust.
 
 **Important:** This is an educational machine learning project, not a medical diagnostic system. Its predictions should not be used as a substitute for professional medical advice.
 
-## 2. Dataset
+## 2. Live Application
+
+DiabetesVision is publicly deployed using Render.
+
+- **Live application (Streamlit):** https://diabetesvision-frontend.onrender.com
+- **Backend API (FastAPI):** https://diabetesvision-mlops.onrender.com
+- **API health check:** https://diabetesvision-mlops.onrender.com/health
+- **API documentation:** https://diabetesvision-mlops.onrender.com/docs
+
+The frontend and backend are deployed as separate Docker-based web services.
+
+The live application was tested successfully. An uploaded retinal image was processed, and the application returned a predicted severity grade, classification and confidence score.
+
+**Hosting note:** The application currently uses Render's free instances. Free services may spin down after inactivity, resulting in slower initial responses. Their filesystem is ephemeral, so uploaded files and retrained models are not guaranteed to persist across restarts.
+
+## 3. Dataset
 
 The project uses the **APTOS 2019 Blindness Detection** dataset from Kaggle.
 
@@ -51,7 +67,7 @@ The labelled dataset was divided using stratified sampling:
 - MobileNetV2 preprocessing was applied.
 - Stratified splitting was used to preserve class distribution.
 
-## 3. Technologies
+## 4. Technologies
 
 - **Python** – Main programming language.
 - **TensorFlow / Keras** – Deep learning framework.
@@ -59,10 +75,11 @@ The labelled dataset was divided using stratified sampling:
 - **FastAPI** – REST API.
 - **Streamlit** – Interactive web interface.
 - **Docker and Docker Compose** – Containerization.
+- **Render** – Cloud hosting and deployment.
 - **Locust** – Load testing.
 - **Pandas, NumPy and Scikit-learn** – Data processing and evaluation.
 
-## 4. Model Architecture
+## 5. Model Architecture
 
 The project uses MobileNetV2 with transfer learning.
 
@@ -75,7 +92,7 @@ The model accepts RGB images of size 224 × 224 and predicts one of five diabeti
 
 Class weighting and early stopping were used during model development.
 
-## 5. Model Evaluation
+## 6. Model Evaluation
 
 The final model was evaluated on a held-out test set of 367 labelled images.
 
@@ -93,18 +110,20 @@ These results represent the held-out test evaluation of the saved final model. T
 
 The detailed evaluation results are available in `models/test_metrics.json`.
 
-## 6. Application Architecture
+## 7. Application Architecture
 
-The application has two main services:
+The application has two main services.
 
-**FastAPI**
+### FastAPI Backend
+
 - Loads the trained model.
 - Provides a health-check endpoint.
 - Accepts retinal images for prediction.
 - Supports image uploads for retraining.
 - Executes the retraining process and loads the resulting model.
 
-**Streamlit**
+### Streamlit Frontend
+
 - Provides the user interface.
 - Allows users to upload retinal images.
 - Displays the predicted severity grade.
@@ -121,9 +140,9 @@ The application has two main services:
 | POST | `/retrain/upload` | Upload labelled images |
 | POST | `/retrain` | Trigger model retraining |
 
-Interactive API documentation is available at `/docs` when the API is running.
+Interactive API documentation is available at `/docs`.
 
-## 7. Model Retraining
+## 8. Model Retraining
 
 The retraining workflow demonstrates how newly uploaded labelled images can be used to update the model.
 
@@ -138,7 +157,7 @@ The process is:
 7. Save the retrained model.
 8. Load the new model into the API.
 
-The retraining workflow was successfully tested using 10 labelled images across two severity grades.
+The retraining workflow was successfully tested locally using 10 labelled images across two severity grades.
 
 The resulting model and report are saved as:
 
@@ -147,7 +166,9 @@ The resulting model and report are saved as:
 
 **Retraining limitation:** The 10-image dataset was used to demonstrate that the pipeline works. Its small size is not sufficient to establish meaningful improvements in model accuracy or generalization.
 
-## 8. Docker Deployment
+The cloud prediction workflow has been tested successfully. Cloud-based retraining and persistent storage have not yet been verified.
+
+## 9. Docker Deployment
 
 The application is containerized using Docker Compose.
 
@@ -157,7 +178,7 @@ The application is containerized using Docker Compose.
 - Docker Desktop
 - Docker Compose
 
-### Run the application
+### Run the application locally
 
 Clone the repository:
 
@@ -184,7 +205,7 @@ Check the running containers:
 docker compose ps
 ```
 
-### Access the application
+### Access the local application
 
 - Streamlit frontend: http://localhost:8501
 - FastAPI: http://localhost:8000
@@ -199,7 +220,47 @@ docker compose down
 
 The Dockerized application was successfully run and tested locally.
 
-## 9. Load Testing with Locust
+## 10. Cloud Deployment with Render
+
+The application was deployed to Render using the Dockerfiles in the GitHub repository.
+
+Two separate web services were created:
+
+| Service | Technology | Status |
+|---|---|---|
+| `diabetesvision-mlops` | FastAPI | Live |
+| `diabetesvision-frontend` | Streamlit | Live |
+
+### Deployment configuration
+
+**Backend service**
+- Runtime: Docker
+- Dockerfile: `api/Dockerfile`
+- Environment variable: `MODEL_PATH`
+- Port: 8000
+
+**Frontend service**
+- Runtime: Docker
+- Dockerfile: `frontend/Dockerfile`
+- Environment variable: `API_URL`
+- Port: 8501
+
+The frontend connects to the deployed backend through its public API URL.
+
+### Cloud deployment verification
+
+The following were verified:
+
+- Backend service successfully deployed.
+- API health endpoint returned a running status.
+- Model loaded successfully in the cloud.
+- Frontend service successfully deployed.
+- Frontend communicated with the backend.
+- An uploaded retinal image successfully received a prediction.
+
+**Public application:** https://diabetesvision-frontend.onrender.com
+
+## 11. Load Testing with Locust
 
 Locust was used to simulate concurrent users accessing the API.
 
@@ -235,7 +296,7 @@ The generated CSV reports are stored in `outputs/locust/`.
 
 **Testing limitation:** These results measure the API home and health endpoints, not image inference. The tests were performed locally with the existing Docker setup; they do not compare different Docker container counts.
 
-## 10. Project Structure
+## 12. Project Structure
 
 ```text
 diabetesvision-mlops/
@@ -280,33 +341,43 @@ diabetesvision-mlops/
 └── README.md
 ```
 
-## 11. Demo Video
+## 13. Demo Video
 
 **Video demonstration:** [Add your video link here]
 
 The demonstration should show:
 
 1. The application running.
-2. Uploading a retinal image.
-3. Receiving a prediction and confidence score.
-4. Uploading labelled images.
-5. Triggering model retraining.
-6. Confirming that the retrained model is loaded.
-7. Running the Locust load tests.
+2. Accessing the deployed application.
+3. Uploading a retinal image.
+4. Receiving a prediction and confidence score.
+5. Uploading labelled images.
+6. Triggering model retraining locally.
+7. Confirming that the retrained model is loaded.
+8. Running the Locust load tests.
 
-## 12. Deployment Status and Limitations
+## 14. Deployment Status and Limitations
 
-- Local Docker deployment: completed and tested.
-- API prediction: implemented and tested.
-- Image upload and retraining: implemented and tested.
-- Model evaluation: completed on a held-out test set.
-- Locust load testing: completed for 5, 10 and 20 simulated users.
-- Public cloud deployment: not yet completed.
-- Multi-container scaling comparison: not yet completed.
-- Image inference load testing: not yet completed.
+| Component | Status |
+|---|---|
+| Dataset exploration and preprocessing | Completed |
+| MobileNetV2 model training | Completed |
+| Model evaluation | Completed |
+| FastAPI prediction | Tested locally and in the cloud |
+| Streamlit interface | Tested locally and in the cloud |
+| Local Docker deployment | Completed and tested |
+| Local image upload and retraining | Completed and tested |
+| Public cloud deployment | Completed on Render |
+| Cloud image prediction | Tested successfully |
+| Cloud retraining and persistent storage | Not yet verified |
+| Locust load testing | Completed for 5, 10 and 20 simulated users |
+| Multi-container scaling comparison | Not yet completed |
+| Image inference load testing | Not yet completed |
 
-## 13. Author
+## 15. Author
 
-**GitHub:** [ksanthiana](https://github.com/ksanthiana)
+**GitHub:** https://github.com/ksanthiana
 
 **Repository:** https://github.com/ksanthiana/diabetesvision-mlops
+
+**Live Application:** https://diabetesvision-frontend.onrender.com
