@@ -428,18 +428,9 @@ diabetesvision-mlops/
 
 ## 13. Demo Video
 
-**Video demonstration:** [Add your video link here]
+**Video demonstration:** 
 
-The demonstration should show:
-
-1. The application running.
-2. Accessing the deployed application.
-3. Uploading a retinal image.
-4. Receiving a prediction and confidence score.
-5. Uploading labelled images.
-6. Triggering model retraining locally.
-7. Confirming that the retrained model is loaded.
-8. Running the Locust load tests.
+https://youtu.be/dTgN9BPjdO8
 
 ## 14. Deployment Status and Limitations
 
@@ -460,6 +451,8 @@ The demonstration should show:
 | Image inference load testing | Not yet completed |
 
 ## 15. Author
+
+Kaze Ange Santhiana
 
 **GitHub:** https://github.com/ksanthiana
 
