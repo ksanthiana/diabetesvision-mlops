@@ -1,0 +1,8 @@
+{
+    "training_images": 8,
+    "validation_images": 2,
+    "epochs_completed": 5,
+    "final_training_accuracy": 0.875,
+    "final_validation_accuracy": 1.0,
+    "model_path": "/app/models/diabetesvision_mobilenetv2_retrained.keras"
+}

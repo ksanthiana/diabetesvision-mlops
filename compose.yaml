@@ -1,0 +1,28 @@
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: api/Dockerfile
+    container_name: diabetesvision-api
+    ports:
+      - "8000:8000"
+    environment:
+      MODEL_PATH: /app/models/diabetesvision_mobilenetv2_final.keras
+    volumes:
+      - ./data/uploaded:/app/data/uploaded
+      - ./models:/app/models
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    container_name: diabetesvision-frontend
+    ports:
+      - "8501:8501"
+    environment:
+      API_URL: http://api:8000
+    depends_on:
+      - api
+    restart: unless-stopped

@@ -1,0 +1,10 @@
+{
+    "test_loss": 0.6154690980911255,
+    "test_accuracy": 0.7574931880108992,
+    "macro_precision": 0.6124081884741499,
+    "macro_recall": 0.6488491731044799,
+    "macro_f1": 0.611026738425972,
+    "weighted_f1": 0.7658514531735121,
+    "quadratic_weighted_kappa": 0.8336921712621772,
+    "test_samples": 367
+}
