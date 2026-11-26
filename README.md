@@ -168,6 +168,8 @@ The resulting model and report are saved as:
 
 The cloud prediction workflow has been tested successfully. Cloud-based retraining and persistent storage have not yet been verified.
 
+
+
 ## 9. Docker Deployment
 
 The application is containerized using Docker Compose.
@@ -332,6 +334,46 @@ python -m pytest tests/ -v
 All three automated API tests passed successfully on November 26, 2026.
 
 
+## API Health Monitoring
+
+DiabetesVision includes a Python-based monitoring script that periodically checks the availability and health of the deployed FastAPI service.
+
+### Monitoring features
+
+- Checks the deployed API health endpoint.
+- Records API status.
+- Checks whether the ML model is loaded.
+- Measures API response time.
+- Records timestamps and errors.
+- Saves monitoring results in a CSV file.
+
+### Run the monitoring script
+
+```bash
+python monitoring/health_monitor.py
+```
+
+The script checks the API every 60 seconds. Press `Ctrl + C` to stop monitoring.
+
+### Monitoring results
+
+A monitoring session on November 26, 2026 produced the following results:
+
+| Check | API status | Model loaded | Response time |
+|---|---|---|---:|
+| 1 | Healthy | Yes | 54.53 seconds |
+| 2 | Offline | No response | Failed |
+| 3 | Healthy | Yes | 3.61 seconds |
+
+The initial response was slow, consistent with a possible Render free-instance cold start. One request also failed because the remote connection closed unexpectedly.
+
+The results are recorded in:
+
+`monitoring/health_logs.csv`
+
+**Note:** These results represent a short monitoring session, not a long-term uptime measurement.
+
+
 ## 12. Project Structure
 
 ```text
@@ -361,6 +403,10 @@ diabetesvision-mlops/
 │   ├── retraining_report.json
 │   └── test_metrics.json
 │
+├── monitoring/
+│   ├── health_monitor.py
+│   └── health_logs.csv
+│
 ├── notebook/
 │   ├── 01_data_exploration.ipynb
 │   └── 02_model_training_mobilenetv2.ipynb
@@ -371,6 +417,9 @@ diabetesvision-mlops/
 ├── src/
 │   └── retraining.py
 │
+├── tests/
+│   └── test_api.py
+|
 ├── .dockerignore
 ├── .gitignore
 ├── compose.yaml
