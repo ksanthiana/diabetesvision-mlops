@@ -1,0 +1,4 @@
+timestamp,status,model_loaded,response_time_ms,error
+2026-11-26T19:56:55.616089,healthy,True,54533.81,
+2026-11-26T19:58:15.695470,offline,False,,Remote end closed connection without response
+2026-11-26T19:59:19.309227,healthy,True,3612.37,
