@@ -6,3 +6,5 @@ pillow
 numpy
 pandas
 scikit-learn
+pytest
+httpx

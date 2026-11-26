@@ -296,6 +296,42 @@ The generated CSV reports are stored in `outputs/locust/`.
 
 **Testing limitation:** These results measure the API home and health endpoints, not image inference. The tests were performed locally with the existing Docker setup; they do not compare different Docker container counts.
 
+## Automated Testing
+
+DiabetesVision includes automated API tests using **Pytest** and FastAPI's `TestClient`.
+
+### Tests implemented
+
+| Test | Description | Expected result |
+|---|---|---|
+| Root endpoint | Checks whether the API responds | HTTP 200 |
+| Health endpoint | Checks API health information | HTTP 200 |
+| Prediction validation | Checks that requests without an uploaded image are rejected | HTTP 422 |
+
+### Run the tests
+
+Install the dependencies:
+
+```bash
+pip install -r api/requirements.txt
+pip install httpx
+```
+
+Run the test suite:
+
+```bash
+python -m pytest tests/ -v
+```
+
+### Latest test results
+
+- Total tests: 3
+- Passed: 3
+- Failed: 0
+
+All three automated API tests passed successfully on November 26, 2026.
+
+
 ## 12. Project Structure
 
 ```text
