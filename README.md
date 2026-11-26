@@ -262,6 +262,7 @@ The following were verified:
 
 **Public application:** https://diabetesvision-frontend.onrender.com
 
+
 ## 11. Load Testing with Locust
 
 Locust was used to simulate concurrent users accessing the API.
@@ -454,8 +455,3 @@ https://youtu.be/dTgN9BPjdO8
 
 Kaze Ange Santhiana
 
-**GitHub:** https://github.com/ksanthiana
-
-**Repository:** https://github.com/ksanthiana/diabetesvision-mlops
-
-**Live Application:** https://diabetesvision-frontend.onrender.com
