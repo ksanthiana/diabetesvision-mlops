@@ -445,10 +445,10 @@ https://youtu.be/dTgN9BPjdO8
 | Local image upload and retraining | Completed and tested |
 | Public cloud deployment | Completed on Render |
 | Cloud image prediction | Tested successfully |
-| Cloud retraining and persistent storage | Not yet verified |
+| Cloud retraining and persistent storage | verified |
 | Locust load testing | Completed for 5, 10 and 20 simulated users |
-| Multi-container scaling comparison | Not yet completed |
-| Image inference load testing | Not yet completed |
+| Multi-container scaling comparison |  completed |
+| Image inference load testing | completed |
 
 ## 15. Author
 
